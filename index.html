@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>buildgreen.ai — Open-source Green AI principles</title>
+  <meta name="description" content="Open-source principles, practical playbooks, and current model guidance for building AI systems that cost less, use less energy, and waste less compute." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f3f0e8;
+      --paper-2: #ebe6da;
+      --ink: #14211a;
+      --muted: #58675f;
+      --line: rgba(20, 33, 26, 0.14);
+      --line-strong: rgba(20, 33, 26, 0.28);
+      --accent: #2f6a45;
+      --accent-soft: rgba(47, 106, 69, 0.12);
+      --accent-2: #98ad8f;
+      --shadow: 0 18px 50px rgba(20, 33, 26, 0.08);
+      --max: 1400px;
+      --gutter: clamp(20px, 3vw, 40px);
+      --radius: 22px;
+      --speed: 420ms;
+      --ease: cubic-bezier(.22,1,.36,1);
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(152,173,143,.2), transparent 25%),
+        linear-gradient(180deg, var(--paper) 0%, #f6f3ec 100%);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection { background: rgba(47,106,69,.18); }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(243, 240, 232, 0.76);
+      border-bottom: 1px solid rgba(20, 33, 26, 0.08);
+    }
+
+    .header-inner,
+    .hero-grid,
+    .main-grid,
+    .footer-inner {
+      width: min(calc(100% - 2 * var(--gutter)), var(--max));
+      margin: 0 auto;
+    }
+
+    .header-inner {
+      min-height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      letter-spacing: -.02em;
+      font-weight: 600;
+    }
+
+    .brand-mark {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(47,106,69,.12);
+      transition: transform var(--speed) var(--ease), box-shadow var(--speed) var(--ease);
+    }
+
+    .brand:hover .brand-mark {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 8px rgba(47,106,69,.16);
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav a,
+    .text-link,
+    .chip-btn {
+      position: relative;
+      color: var(--muted);
+      transition: color 180ms ease, transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .nav a::after,
+    .text-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 220ms ease;
+      opacity: .65;
+    }
+
+    .nav a:hover,
+    .text-link:hover { color: var(--ink); }
+    .nav a:hover::after,
+    .text-link:hover::after { transform: scaleX(1); }
+
+    .button-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    .button,
+    .chip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      user-select: none;
+      will-change: transform;
+    }
+
+    .button {
+      font-weight: 600;
+      letter-spacing: -.01em;
+    }
+
+    .button-primary {
+      background: var(--ink);
+      color: var(--paper);
+      box-shadow: 0 10px 24px rgba(20,33,26,.14);
+    }
+
+    .button-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(20,33,26,.18);
+    }
+
+    .button-secondary,
+    .chip-btn {
+      background: rgba(255,255,255,.42);
+      border-color: rgba(20,33,26,.12);
+      color: var(--ink);
+    }
+
+    .button-secondary:hover,
+    .chip-btn:hover {
+      border-color: rgba(20,33,26,.26);
+      background: rgba(255,255,255,.64);
+      transform: translateY(-1px);
+    }
+
+    .button:active,
+    .chip-btn:active,
+    .metric-card:active,
+    .proof-row:active {
+      transform: translateY(1px) scale(.988);
+    }
+
+    .hero {
+      padding: clamp(26px, 5vw, 64px) 0 clamp(28px, 4vw, 52px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      align-items: end;
+    }
+
+    .hero-copy {
+      grid-column: 1 / span 8;
+      display: grid;
+      gap: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,33,26,.12);
+      background: rgba(255,255,255,.38);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      animation: pulse 2200ms ease-in-out infinite;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: clamp(52px, 9.4vw, 118px);
+      line-height: .94;
+      letter-spacing: -.045em;
+      text-wrap: pretty;
+      max-width: 9.5ch;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin: 0;
+      max-width: 58ch;
+      font-size: clamp(19px, 2vw, 23px);
+      line-height: 1.5;
+      color: #223027;
+      text-wrap: pretty;
+    }
+
+    .hero-notes {
+      grid-column: 10 / span 3;
+      align-self: stretch;
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      background: rgba(255,255,255,.34);
+      border: 1px solid rgba(20,33,26,.1);
+      box-shadow: 0 12px 34px rgba(20,33,26,.06);
+    }
+
+    .note {
+      padding: 0 0 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .note:last-child { border-bottom: none; padding-bottom: 0; }
+    .note-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .note p {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #223027;
+    }
+
+    .note p,
+    .kicker p,
+    .bridge p,
+    .footer-inner p,
+    .principle-copy p,
+    .section-intro p,
+    .proof-row p,
+    .timeline-item p,
+    .metric-card p { margin: 0; }
+
+    .hero-metrics {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric-card {
+      padding: 18px;
+      border-top: 1px solid var(--line-strong);
+      background: rgba(255,255,255,.38);
+      transition: transform 220ms ease, background-color 220ms ease, border-color 220ms ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.6);
+      border-color: rgba(20,33,26,.3);
+    }
+
+    .metric-value {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -.04em;
+      margin-bottom: 8px;
+    }
+
+    .metric-caption { color: var(--muted); font-size: 14px; }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      padding: clamp(28px, 4vw, 40px) 0 100px;
+    }
+
+    .rail {
+      grid-column: 1 / span 3;
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+      align-self: start;
+      padding-top: 12px;
+      height: fit-content;
+    }
+
+    .rail-block {
+      padding-right: 18px;
+      border-right: 1px solid var(--line-strong);
+    }
+
+    .rail-title {
+      margin: 0 0 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      position: relative;
+      width: 2px;
+      height: 180px;
+      background: rgba(20,33,26,.1);
+      margin: 16px 0 22px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 18%;
+      background: var(--accent);
+      transform-origin: top;
+      transition: height 320ms ease;
+    }
+
+    .rail-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .rail-link {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: baseline;
+      padding: 8px 10px 8px 0;
+      color: var(--muted);
+      border-radius: 12px;
+      transition: color 180ms ease, transform 180ms ease, background-color 180ms ease;
+    }
+
+    .rail-link span:first-child {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .rail-link.active,
+    .rail-link:hover {
+      color: var(--ink);
+      transform: translateX(2px);
+    }
+
+    .content {
+      grid-column: 4 / -1;
+      display: grid;
+      gap: 54px;
+    }
+
+    .section {
+      padding-top: 8px;
+      scroll-margin-top: calc(var(--header-h) + 24px);
+    }
+
+    .section-intro {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-label {
+      grid-column: span 3;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      color: var(--muted);
+      padding-top: 6px;
+    }
+
+    .section-head {
+      grid-column: span 9;
+    }
+
+    .section-head h2,
+    .bridge h2,
+    .cta-panel h2,
+    .footer-wordmark {
+      margin: 0 0 12px;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: .98;
+      letter-spacing: -.04em;
+      text-wrap: pretty;
+    }
+
+    .section-head p {
+      max-width: 64ch;
+      color: #2d3d33;
+      font-size: 18px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .principles {
+      display: grid;
+      gap: 12px;
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 24px;
+      padding: 22px 0 26px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+
+    .principle-number {
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: .95;
+      font-weight: 700;
+      letter-spacing: -.06em;
+      color: rgba(20,33,26,.24);
+      position: sticky;
+      top: calc(var(--header-h) + 100px);
+      height: fit-content;
+    }
+
+    .principle-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .principle-head h3 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.05;
+      letter-spacing: -.035em;
+      text-wrap: pretty;
+    }
+
+    .principle-tag {
+      color: var(--muted);
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .principle-copy {
+      display: grid;
+      gap: 14px;
+      max-width: 72ch;
+      color: #26352c;
+      font-size: 17px;
+      text-wrap: pretty;
+    }
+
+    .principle-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .chip-btn {
+      min-height: 40px;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .chip-btn[data-copied="true"] {
+      background: var(--accent-soft);
+      border-color: rgba(47,106,69,.28);
+      color: var(--accent);
+    }
+
+    .proof-grid,
+    .timeline,
+    .bridge-grid,
+    .cta-panel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .proof-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+      gap: 18px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      transition: transform 180ms ease, background-color 180ms ease;
+    }
+
+    .proof-row:hover {
+      background: rgba(255,255,255,.36);
+      transform: translateX(2px);
+    }
+
+    .proof-row strong { display: block; margin-bottom: 4px; }
+    .proof-meta { color: var(--muted); font-size: 14px; }
+    .proof-metric { font-weight: 700; letter-spacing: -.03em; }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-step {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: 12px;
+      padding-top: 4px;
+    }
+
+    .bridge {
+      padding: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.22));
+      border: 1px solid rgba(20,33,26,.1);
+      box-shadow: var(--shadow);
+    }
+
+    .bridge-grid {
+      grid-template-columns: repeat(12, 1fr);
+      align-items: end;
+    }
+
+    .bridge-copy { grid-column: span 8; }
+    .bridge-actions { grid-column: span 4; display: flex; justify-content: flex-end; align-items: end; }
+
+    .cta-panel {
+      padding: 32px 0 10px;
+      border-top: 1px solid var(--line-strong);
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 44px;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .footer-wordmark {
+      font-size: clamp(26px, 4vw, 40px);
+      margin-bottom: 4px;
+    }
+
+    .footer-inner p { color: var(--muted); max-width: 64ch; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 680ms var(--ease), transform 680ms var(--ease);
+      transition-delay: var(--delay, 0ms);
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    :focus-visible {
+      outline: 2px solid rgba(47,106,69,.72);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: .92; }
+      50% { transform: scale(1.28); opacity: .62; }
+    }
+
+    @media (max-width: 1100px) {
+      .hero-copy { grid-column: 1 / -1; }
+      .hero-notes { grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--line-strong); padding: 20px 0 0; grid-template-columns: repeat(3, 1fr); }
+      .rail { display: none; }
+      .content { grid-column: 1 / -1; }
+      .section-intro { grid-template-columns: 1fr; }
+      .section-label, .section-head { grid-column: auto; }
+      .bridge-copy, .bridge-actions { grid-column: 1 / -1; }
+      .bridge-actions { justify-content: flex-start; }
+    }
+
+    @media (max-width: 760px) {
+      .header-inner { align-items: flex-start; padding: 14px 0; }
+      .nav { gap: 10px 14px; }
+      .hero-title { max-width: 8.5ch; }
+      .hero-metrics,
+      .hero-notes,
+      .proof-row,
+      .timeline-item,
+      .principle,
+      .bridge-grid {
+        grid-template-columns: 1fr;
+      }
+      .principle-number {
+        position: static;
+        font-size: 28px;
+        color: var(--accent);
+      }
+      .proof-row { gap: 10px; }
+      .button-row { align-items: stretch; }
+      .button, .chip-btn { width: 100%; justify-content: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="buildgreen.ai home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>buildgreen.ai</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#principles">Principles</a>
+        <a href="#proof">Proof</a>
+        <a href="#contribute">Contribute</a>
+        <a href="#studio">Studio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow reveal" style="--delay: 60ms"><span class="eyebrow-dot" aria-hidden="true"></span> Open-source framework for lower-cost AI</div>
+          <h1 class="hero-title reveal" style="--delay: 120ms">AI is expensive. <em>Going green</em> cuts costs.</h1>
+          <p class="hero-sub reveal" style="--delay: 220ms">buildgreen.ai is the open-source framework for cutting waste out of AI systems. Use the principles yourself, contribute to the project, or work with Green AI Studio to apply them inside your company.</p>
+          <div class="button-row reveal" style="--delay: 300ms">
+            <a class="button button-primary" href="#principles">Explore the principles</a>
+            <a class="button button-secondary" href="#studio">Work with Green AI Studio</a>
+          </div>
+          <div class="hero-metrics reveal" style="--delay: 380ms">
+            <article class="metric-card">
+              <div class="metric-value">70%+</div>
+              <p class="metric-caption">Typical headline savings once teams remove waste, right-size models, and pull repeatable work out of frontier inference.</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-value">6</div>
+              <p class="metric-caption">Core principles for finding waste, choosing the right workload, and designing AI systems that hold up in production.</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-value">3</div>
+              <p class="metric-caption">Clear paths from the homepage: use the framework, contribute improvements, or get hands-on help through the Studio.</p>
+            </article>
+          </div>
+        </div>
+
+        <aside class="hero-notes reveal" style="--delay: 260ms" aria-label="Key framing notes">
+          <div class="note">
+            <div class="note-label">What this is</div>
+            <p>Open principles, practical playbooks, and current model guidance for teams that want better AI economics.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">What it fixes</div>
+            <p>Oversized models, bloated inference spend, unnecessary energy use, and workflows that keep calling LLMs for work that should already be software.</p>
+          </div>
+          <div class="note">
+            <div class="note-label">How to use it</div>
+            <p>Read the framework, contribute what works, or bring in Green AI Studio if you want help auditing and redesigning a live system.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <aside class="rail" aria-label="Scroll guide">
+        <div class="rail-block">
+          <p class="rail-title">Methodology map</p>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="rail-list" id="railList">
+            <a class="rail-link" href="#p1"><span>01</span><span>Determinism</span></a>
+            <a class="rail-link" href="#p2"><span>02</span><span>Minimum model</span></a>
+            <a class="rail-link" href="#p3"><span>03</span><span>Audit first</span></a>
+            <a class="rail-link" href="#p4"><span>04</span><span>Measure cost</span></a>
+            <a class="rail-link" href="#p5"><span>05</span><span>Local-first</span></a>
+            <a class="rail-link" href="#p6"><span>06</span><span>Auditable by design</span></a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="content">
+        <section id="principles" class="section">
+          <div class="section-intro reveal">
+            <div class="section-label">The framework</div>
+            <div class="section-head">
+              <div class="kicker"><span>Open source</span><span>•</span><span>Applied</span><span>•</span><span>Current</span></div>
+              <h2>Six principles for building AI that costs less and wastes less.</h2>
+              <p>The principles are open source. The playbooks make them usable. The model guidance keeps the framework grounded in what is actually cost effective to run now.</p>
+            </div>
+          </div>
+
+          <div class="principles">
+            <article id="p1" class="principle principle-target reveal">
+              <div class="principle-number">01</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Default to Determinism</h3>
+                  <span class="principle-tag">If it can be deterministic, make it deterministic.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>Most AI workflows contain large amounts of work that never needed AI in the first place: parsing, formatting, routing, lookup, and conditional logic. Code handles those tasks more cheaply, more quickly, and with identical output for identical input.</p>
+                  <p>Before routing work to a model, ask whether a function can do it. If the answer is yes, write the function. Reserve inference for the edge cases that actually require reasoning.</p>
+                  <p><strong>Benchmark:</strong> in the greenchemistry.ai rebuild, 90% of the original workflow became deterministic Python. Cost dropped from $5.00 per run to under $0.005.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p1">Copy citation link</button>
+                  <a class="chip-btn" href="#proof">See proof in practice</a>
+                </div>
+              </div>
+            </article>
+
+            <article id="p2" class="principle principle-target reveal">
+              <div class="principle-number">02</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Use the Minimum Sufficient Model</h3>
+                  <span class="principle-tag">Match capability to task, ruthlessly.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>The frontier model is rarely the right default. Structured extraction, classification, constrained generation, and predictable formatting often perform better on smaller models when speed, consistency, and cost are the real metrics.</p>
+                  <p>The McLaren principle applies: you do not put a tow hitch on a Formula One car to take the garbage to the dump. Match the vehicle to the job, and keep frontier capability for the small share of work that genuinely needs it.</p>
+                  <p><strong>Starting hypothesis:</strong> most enterprise workflows need frontier capability on less than 15% of their tasks.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p2">Copy citation link</button>
+                  <a class="chip-btn" href="#proof">See the case studies</a>
+                </div>
+              </div>
+            </article>
+
+            <article id="p3" class="principle principle-target reveal">
+              <div class="principle-number">03</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Audit Before You Automate</h3>
+                  <span class="principle-tag">Map workflows before redesigning them.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>AI systems often get built for the workflow as people imagine it rather than the workflow as it actually exists. Real audits expose redundant steps, hidden deterministic work, and unnecessary inference that was only there because nobody diagrammed the system first.</p>
+                  <p>Use a determinism scorecard from 0 to 4: from fully deterministic work that should immediately become code to genuine frontier tasks that need explicit justification.</p>
+                  <p><strong>Typical finding:</strong> initial audits place 60–80% of organizational AI usage at score 0 or 1.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p3">Copy citation link</button>
+                </div>
+              </div>
+            </article>
+
+            <article id="p4" class="principle principle-target reveal">
+              <div class="principle-number">04</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Measure Inference Cost as a First-Class Metric</h3>
+                  <span class="principle-tag">Architecture-level commitment, not a cleanup task.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>AI costs spiral when teams treat inference cost the way old cloud teams treated egress: a number they will optimize later. Later never comes. The workflows harden first and the waste becomes cultural.</p>
+                  <p>Instrument cost and latency at the point of call. Track cost per workflow run, not just cost per API request. Review the trend alongside classification updates so cost discipline compounds over time.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p4">Copy citation link</button>
+                </div>
+              </div>
+            </article>
+
+            <article id="p5" class="principle principle-target reveal">
+              <div class="principle-number">05</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Local-First Where Possible</h3>
+                  <span class="principle-tag">Lower cost and lower exposure, when the workload fits.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>Local inference eliminates per-token API costs for qualifying workloads and keeps sensitive data inside the organizational perimeter. For structured, high-volume tasks, that is often both the cheaper and safer architecture.</p>
+                  <p>Apple Silicon is a strong current example because unified memory, efficient matrix hardware, and low idle power make intermittent inference practical. These are engineering claims, not brand claims.</p>
+                  <p><strong>Constraint:</strong> local-first is powerful, but only when the workload is sufficiently repetitive and can be handled by sub-frontier models.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p5">Copy citation link</button>
+                </div>
+              </div>
+            </article>
+
+            <article id="p6" class="principle principle-target reveal">
+              <div class="principle-number">06</div>
+              <div>
+                <div class="principle-head">
+                  <h3>Auditable by Design</h3>
+                  <span class="principle-tag">Deterministic outputs are auditable outputs.</span>
+                </div>
+                <div class="principle-copy">
+                  <p>If a workflow requires auditability, it cannot rely on a raw stochastic call as its core mechanism. The architecture has to be designed around determinism from the beginning.</p>
+                  <p>That makes this more than a cost discipline. It is also a compliance, reliability, and governance discipline. The more deterministic code you extract, the more of the workflow becomes inspectable by default.</p>
+                  <p><strong>Convergence:</strong> the same architectural choices that make AI cheaper also make it easier to defend.</p>
+                </div>
+                <div class="principle-toolbar">
+                  <button class="chip-btn copy-link" data-target="p6">Copy citation link</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="proof" class="section">
+          <div class="section-intro reveal">
+            <div class="section-label">Proof in practice</div>
+            <div class="section-head">
+              <h2>These are not marginal gains. They change unit economics.</h2>
+              <p>The same pattern keeps showing up across technical domains: remove waste, move deterministic work back into software, and stop paying frontier-model prices for jobs that do not need frontier-model architecture.</p>
+            </div>
+          </div>
+          <div class="proof-grid reveal">
+            <div class="proof-row">
+              <div>
+                <strong>greenchemistry.ai</strong>
+                <p class="proof-meta">Scientific computing</p>
+              </div>
+              <div>
+                <p class="proof-meta">Before</p>
+                <p class="proof-metric">$5.00 / run</p>
+              </div>
+              <div>
+                <p class="proof-meta">After</p>
+                <p class="proof-metric">&lt; $0.01 / run</p>
+              </div>
+              <div>
+                <p>Cost per process analysis fell by more than 99% once most of the workflow was rebuilt as deterministic software and only the true reasoning edge cases stayed on model.</p>
+              </div>
+            </div>
+            <div class="proof-row">
+              <div>
+                <strong>CrowdTamers</strong>
+                <p class="proof-meta">Marketing and content operations</p>
+              </div>
+              <div>
+                <p class="proof-meta">Before</p>
+                <p class="proof-metric">8-day turnaround</p>
+              </div>
+              <div>
+                <p class="proof-meta">After</p>
+                <p class="proof-metric">2-day turnaround</p>
+              </div>
+              <div>
+                <p>Workflow redesign cut overhead 60% in four months, supported 30% topline growth, and removed expensive inference from repeatable production work.</p>
+              </div>
+            </div>
+            <div class="proof-row">
+              <div>
+                <strong>AI detection platform</strong>
+                <p class="proof-meta">High-volume text analysis</p>
+              </div>
+              <div>
+                <p class="proof-meta">Before</p>
+                <p class="proof-metric">$0.50 / million words</p>
+              </div>
+              <div>
+                <p class="proof-meta">After</p>
+                <p class="proof-metric">&lt; $0.002 / million words</p>
+              </div>
+              <div>
+                <p>Model right-sizing and workload redesign cut cost by orders of magnitude while improving false positive performance and speeding up throughput.</p>
+              </div>
+            </div>
+            <div class="proof-row">
+              <div>
+                <strong>VC fund</strong>
+                <p class="proof-meta">Founder screening and operations</p>
+              </div>
+              <div>
+                <p class="proof-meta">Before</p>
+                <p class="proof-metric">2 weeks</p>
+              </div>
+              <div>
+                <p class="proof-meta">After</p>
+                <p class="proof-metric">1 day</p>
+              </div>
+              <div>
+                <p>First-pass founder review dropped from two weeks to one day, while operational overhead fell 45% in two months.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contribute" class="section">
+          <div class="section-intro reveal">
+            <div class="section-label">Three paths</div>
+            <div class="section-head">
+              <h2>Use it, improve it, or bring us in.</h2>
+              <p>Build Green AI is the open framework. Green AI Studio is the implementation arm. The contributor path sits between them for people who want to sharpen the work in public.</p>
+            </div>
+          </div>
+          <div class="timeline reveal">
+            <div class="timeline-item">
+              <div class="timeline-step">Use it</div>
+              <div>
+                <strong>Take the principles and apply them</strong>
+                <p>Read the framework, use the playbooks, and find the waste in your own stack without waiting for anyone's permission.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-step">Contribute</div>
+              <div>
+                <strong>Help keep the framework current</strong>
+                <p>Add better playbooks, sharper workload audits, updated model recommendations, and examples that make the principles easier to apply.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-step">Hire</div>
+              <div>
+                <strong>Work with Green AI Studio</strong>
+                <p>If you want help auditing systems, redesigning workflows, or reducing inference spend inside a live business, that happens through the Studio.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="community" class="section">
+          <div class="section-intro reveal">
+            <div class="section-label">Open-source project</div>
+            <div class="section-head">
+              <h2>Help improve the framework.</h2>
+              <p>Models change. Hardware changes. Good tradeoffs move with them. This project should stay current because the community keeps refining the principles, the playbooks, and the model guidance.</p>
+            </div>
+          </div>
+          <div class="bridge reveal">
+            <div class="bridge-grid">
+              <div class="bridge-copy">
+                <div class="kicker"><span>Public framework</span><span>•</span><span>Low ceremony</span></div>
+                <h2>Contribute practical improvements, not abstract agreement.</h2>
+                <p>Good contributions include sharper workload audits, smaller-model substitutions, local-first patterns, benchmark updates, and implementation notes that make the framework easier to use in the real world.</p>
+              </div>
+              <div class="bridge-actions">
+                <div class="button-row">
+                  <a class="button button-primary" href="mailto:hello@buildgreen.ai?subject=buildgreen.ai%20contribution">Contribute to the project</a>
+                  <a class="button button-secondary" href="mailto:hello@buildgreen.ai?subject=buildgreen.ai%20repo%20access">Get the repo and guide</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="studio" class="section">
+          <div class="cta-panel reveal">
+            <div class="kicker"><span>Green AI Studio</span><span>•</span><span>Implementation arm</span></div>
+            <h2>Need help doing this inside a real company?</h2>
+            <p>Green AI Studio helps teams audit AI workloads, reduce inference spend, redesign workflows, and build systems that cost less to run. If you want hands-on help, start there.</p>
+            <div class="button-row" style="margin-top: 20px;">
+              <a class="button button-primary" href="mailto:hello@buildgreen.ai?subject=Green%20AI%20Studio%20inquiry">Talk to Green AI Studio</a>
+              <a class="button button-secondary" href="#contribute">See the open project first</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-wordmark">buildgreen.ai</div>
+        <p>Open-source principles, practical playbooks, and current model guidance for building AI systems that cost less, use less energy, and waste less compute.</p>
+      </div>
+      <p>Built as a static editorial homepage with citeable anchors, restrained motion, and a clearer split between the open framework, the contributor path, and Green AI Studio.</p>
+    </div>
+  </footer>
+
+  <script>
+    const revealEls = document.querySelectorAll('.reveal');
+    const principleTargets = [...document.querySelectorAll('.principle-target')];
+    const railLinks = [...document.querySelectorAll('.rail-link')];
+    const progressFill = document.getElementById('progressFill');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reduceMotion) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+      revealEls.forEach(el => revealObserver.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add('in-view'));
+    }
+
+    const principleObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const id = visible.target.id;
+      railLinks.forEach((link, index) => {
+        const active = link.getAttribute('href') === `#${id}`;
+        link.classList.toggle('active', active);
+        if (active && progressFill) {
+          const pct = ((index + 1) / railLinks.length) * 100;
+          progressFill.style.height = `${pct}%`;
+        }
+      });
+    }, {
+      threshold: [0.2, 0.45, 0.7],
+      rootMargin: '-18% 0px -38% 0px'
+    });
+
+    principleTargets.forEach(target => principleObserver.observe(target));
+
+    document.querySelectorAll('.copy-link').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.target;
+        const url = `${window.location.origin}${window.location.pathname}#${id}`;
+        try {
+          await navigator.clipboard.writeText(url);
+          btn.dataset.copied = 'true';
+          const old = btn.textContent;
+          btn.textContent = 'Copied';
+          window.setTimeout(() => {
+            btn.dataset.copied = 'false';
+            btn.textContent = old;
+          }, 1400);
+        } catch {
+          window.location.hash = id;
+          btn.dataset.copied = 'true';
+          const old = btn.textContent;
+          btn.textContent = 'Link ready in URL';
+          window.setTimeout(() => {
+            btn.dataset.copied = 'false';
+            btn.textContent = old;
+          }, 1600);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
