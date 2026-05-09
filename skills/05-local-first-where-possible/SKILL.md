@@ -3,7 +3,7 @@ name: local-first-where-possible
 description: Use when evaluating whether a workload that currently uses a hosted model API could be moved to local inference, or when assessing whether local execution is technically and economically viable for a given task.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 05-local-first-where-possible

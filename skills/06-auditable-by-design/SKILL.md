@@ -3,7 +3,7 @@ name: auditable-by-design
 description: Use when a workflow must produce outputs that are auditable, traceable, or defensible — particularly in regulated industries, compliance-sensitive contexts, or any system where a bad output has meaningful legal, financial, or safety consequences.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 06-auditable-by-design

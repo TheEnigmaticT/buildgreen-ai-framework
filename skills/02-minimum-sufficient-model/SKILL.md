@@ -3,7 +3,7 @@ name: minimum-sufficient-model
 description: Use when a workflow still requires probabilistic inference and you need to identify the lightest viable model tier, or justify why a frontier model is still necessary.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 02-minimum-sufficient-model

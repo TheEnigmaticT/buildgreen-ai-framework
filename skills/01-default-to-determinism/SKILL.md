@@ -3,7 +3,7 @@ name: default-to-determinism
 description: Use when an agent should review its own interaction logs with a user and identify repeated tasks that should become cron jobs, deterministic code, or hybrid workflows instead of repeated LLM chats.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 01-default-to-determinism

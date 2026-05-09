@@ -3,7 +3,7 @@ name: measure-inference-cost
 description: Use when a team needs to instrument AI workflows for cost tracking, establish cost-per-run as a first-class metric, or identify where inference spend is concentrated in a production system.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 04-measure-inference-cost

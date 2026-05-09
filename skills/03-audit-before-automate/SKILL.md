@@ -3,7 +3,7 @@ name: audit-before-automate
 description: Use when a team wants to introduce AI into a workflow, or suspects their existing AI-assisted workflow is poorly designed. Maps the actual workflow before recommending any automation.
 version: 1.0.0
 author: Build Green AI
-license: MIT
+license: CC-BY-4.0
 metadata:
   buildgreen:
     principle: 03-audit-before-automate
