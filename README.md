@@ -7,7 +7,7 @@ This repo has two jobs:
 1. explain the principles behind greener AI use
 2. provide repeatable skills and templates for applying those principles to real workflows
 
-The goal is not to ban model use. The goal is to stop paying for model calls when code, rules, smaller models, local models, or better workflow design would do the job better.
+We aren't here to ban models. We're here to stop paying for them when code, rules, smaller models, or better workflow design do the job better.
 
 ## Who this is for
 
@@ -20,35 +20,42 @@ The goal is not to ban model use. The goal is to stop paying for model calls whe
 
 If you are new to the repo, use this order:
 
-1. Read the six principles below.
+1. Read the six principle docs in `principles/`.
 2. Open `skills/README.md` to see how the executable layer is organized.
 3. Pick one workflow you already run often.
 4. Use the most relevant skill to assess that workflow.
-5. Record the result with one of the provided templates.
+5. Record what you found using the templates.
 
-If you want the theory first, start in `principles/`.
+If you want the theory first, start here:
+- [`principles/01-default-to-determinism.md`](principles/01-default-to-determinism.md)
+- [`principles/02-minimum-sufficient-model.md`](principles/02-minimum-sufficient-model.md)
+- [`principles/03-audit-before-automate.md`](principles/03-audit-before-automate.md)
+- [`principles/04-measure-inference-cost.md`](principles/04-measure-inference-cost.md)
+- [`principles/05-local-first-where-possible.md`](principles/05-local-first-where-possible.md)
+- [`principles/06-auditable-by-design.md`](principles/06-auditable-by-design.md)
+
 If you want the operational layer first, start in `skills/`.
 If you want model-selection guidance, start in `models/`.
 
 ## The six principles
 
 ### 1. Default to determinism
-If a workflow is mostly rules, transformations, extraction, routing, or validation, it should usually become code or a rules-based workflow before it becomes another model call.
+If a workflow is mostly rules, transformations, or validation, it should become code before you add a model.
 
 ### 2. Minimum sufficient model
-Use the smallest model tier that reliably does the job. Frontier models should be justified, not assumed.
+Use the smallest model that reliably does the job. Justify frontier models; don't assume them.
 
 ### 3. Audit before automate
-Do not automate a bad workflow just because an LLM can sit in the middle of it. Audit the workflow first.
+Don't automate a bad workflow just because an LLM can sit in it. Audit first.
 
 ### 4. Measure inference cost
-If you do not measure cost, latency, volume, and failure modes, you cannot manage them.
+If you don't measure cost and latency, you can't manage them.
 
 ### 5. Local-first where possible
-When privacy, latency, cost control, or predictable throughput matter, check whether the workload should move local.
+When privacy or cost matter, check if the workload should move local.
 
 ### 6. Auditable by design
-A workflow should be explainable, reviewable, and traceable. If nobody can say why it produced an output, the system is fragile.
+A workflow should be reviewable and traceable. If nobody knows why it produced an output, the system is fragile.
 
 ## How this repo is organized
 
@@ -76,26 +83,26 @@ Implementation notes and internal build planning for the repo itself.
 
 ## A simple way to use this repo
 
-Take one AI workflow you already run and ask four direct questions:
+Take one workflow you already run and ask four questions:
 
-1. Is this actually deterministic work in disguise?
-2. If not, is the current model larger than the task needs?
-3. If model use remains justified, do we know what it costs?
-4. Can we make the workflow more local, more constrained, and more auditable?
+1. Is this actually code in disguise?
+2. Is the current model larger than the task needs?
+3. Do we know what it costs?
+4. Can we make the workflow local and auditable?
 
 That sequence alone will find a surprising amount of waste.
 
 ## What this repo produces
 
-Build Green AI is meant to produce decisions, not slogans.
+Build Green AI produces decisions, not slogans.
 
-A good output from this repo should end in one of a few clear recommendations:
+A good recommendation looks like this:
 - replace with code
 - replace with workflow rule
 - downshift model tier
 - move local
 - add instrumentation first
-- keep the current approach, but justify it
+- keep the current approach (with justification)
 
 ## Current state
 
