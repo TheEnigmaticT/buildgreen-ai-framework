@@ -20,11 +20,14 @@ We aren't here to ban models. We're here to stop paying for them when code, rule
 
 If you are new to the repo, use this order:
 
-1. Read the six principle docs in `principles/`.
-2. Open `skills/README.md` to see how the executable layer is organized.
-3. Pick one workflow you already run often.
-4. Use the most relevant skill to assess that workflow.
-5. Record what you found using the templates.
+1. Read `START-HERE.md`.
+2. Read `PRINCIPLE-ROUTING.md` if you are not sure where to begin.
+3. Read the six principle docs in `principles/`.
+4. Use `GLOSSARY.md` when a repo term needs a fixed definition.
+5. Open `skills/README.md` to see how the executable layer is organized.
+6. Pick one workflow you already run often.
+7. Use the most relevant skill to assess that workflow.
+8. Record what you found using the templates.
 
 If you want the theory first, start here:
 - [`principles/01-default-to-determinism.md`](principles/01-default-to-determinism.md)
@@ -61,6 +64,9 @@ A workflow should be reviewable and traceable. If nobody knows why it produced a
 
 ### `principles/`
 Public principle documents. This is the human-readable layer.
+
+### `GLOSSARY.md`
+Shared repo definitions for terms like determinism, bounded judgment, inference cost, and auditability.
 
 ### `skills/`
 Executable coaching skills. This is the operational layer.
